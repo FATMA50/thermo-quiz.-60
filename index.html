@@ -1,0 +1,1769 @@
+
+# Let me write the file directly in parts to avoid the truncation issue
+
+part1 = """<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>امتحان تاريخ الرياضيات - الفصل الرابع والخامس</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            min-height: 100vh;
+            color: #fff;
+            overflow-x: hidden;
+        }
+        
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(100, 200, 255, 0.3);
+            border-radius: 50%;
+            animation: float 15s infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(720deg); opacity: 0; }
+        }
+        
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .exam-header {
+            text-align: center;
+            padding: 30px 20px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            margin-bottom: 25px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        
+        .exam-header h1 {
+            font-size: 2.2em;
+            font-weight: 900;
+            background: linear-gradient(90deg, #00d4ff, #7b2cbf, #ff006e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+        
+        .exam-header .subtitle {
+            color: #a0a0d0;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+        }
+        
+        .timer-box {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, #e94560, #ff6b6b);
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 1.3em;
+            font-weight: 800;
+            box-shadow: 0 10px 30px rgba(233, 69, 96, 0.4);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .timer-box .icon {
+            font-size: 1.4em;
+        }
+        
+        .info-bar {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .info-item {
+            background: rgba(255,255,255,0.08);
+            padding: 8px 18px;
+            border-radius: 15px;
+            font-size: 0.9em;
+            color: #c0c0e0;
+        }
+        
+        .info-item span {
+            color: #feca57;
+            font-weight: 700;
+        }
+        
+        .start-screen {
+            text-align: center;
+            padding: 60px 20px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 25px;
+            border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .start-screen h2 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: #feca57;
+        }
+        
+        .start-screen p {
+            color: #b0b0d0;
+            margin-bottom: 15px;
+            line-height: 1.8;
+            font-size: 1.05em;
+        }
+        
+        .rules-box {
+            background: rgba(0,0,0,0.2);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 25px 0;
+            text-align: right;
+            border-right: 3px solid #00d4ff;
+        }
+        
+        .rules-box h3 {
+            color: #00d4ff;
+            margin-bottom: 12px;
+            font-size: 1.2em;
+        }
+        
+        .rules-box ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .rules-box li {
+            padding: 8px 0;
+            color: #c0c0e0;
+            position: relative;
+            padding-right: 25px;
+        }
+        
+        .rules-box li::before {
+            content: "✦";
+            position: absolute;
+            right: 0;
+            color: #feca57;
+        }
+        
+        .btn-start {
+            background: linear-gradient(135deg, #11998e, #38ef7d);
+            color: #000;
+            border: none;
+            padding: 18px 60px;
+            font-size: 1.3em;
+            font-weight: 800;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Cairo', sans-serif;
+            transition: all 0.3s ease;
+            box-shadow: 0 15px 35px rgba(56, 239, 125, 0.3);
+            margin-top: 20px;
+        }
+        
+        .btn-start:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 20px 45px rgba(56, 239, 125, 0.4);
+        }
+        
+        .exam-screen {
+            display: none;
+        }
+        
+        .progress-bar {
+            background: rgba(255,255,255,0.1);
+            height: 8px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00d4ff, #7b2cbf);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+        
+        .progress-text {
+            text-align: center;
+            color: #a0a0d0;
+            font-size: 0.9em;
+            margin-bottom: 20px;
+        }
+        
+        .progress-text span {
+            color: #feca57;
+            font-weight: 700;
+        }
+        
+        .question-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255,255,255,0.08);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .question-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #00d4ff, #7b2cbf, #ff006e);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .question-card:hover::before {
+            opacity: 1;
+        }
+        
+        .question-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+        
+        .question-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+        
+        .butterfly {
+            font-size: 1.6em;
+            animation: flutter 3s ease-in-out infinite;
+            display: inline-block;
+        }
+        
+        @keyframes flutter {
+            0%, 100% { transform: rotate(-5deg) scale(1); }
+            25% { transform: rotate(5deg) scale(1.1); }
+            50% { transform: rotate(-3deg) scale(1); }
+            75% { transform: rotate(3deg) scale(1.1); }
+        }
+        
+        .q-number {
+            background: linear-gradient(135deg, #00d4ff, #0099cc);
+            color: #fff;
+            padding: 5px 15px;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 0.9em;
+        }
+        
+        .q-type {
+            background: rgba(255,255,255,0.1);
+            padding: 4px 12px;
+            border-radius: 10px;
+            font-size: 0.8em;
+            color: #c0c0e0;
+        }
+        
+        .question-text {
+            font-size: 1.15em;
+            line-height: 1.8;
+            color: #e0e0ff;
+            margin-bottom: 20px;
+            padding-right: 10px;
+        }
+        
+        .question-text .highlight {
+            color: #feca57;
+            font-weight: 700;
+        }
+        
+        .tf-options {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+        
+        .tf-btn {
+            flex: 1;
+            max-width: 200px;
+            padding: 15px 25px;
+            border: 2px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.05);
+            color: #fff;
+            border-radius: 15px;
+            cursor: pointer;
+            font-family: 'Cairo', sans-serif;
+            font-size: 1.1em;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .tf-btn:hover {
+            background: rgba(255,255,255,0.15);
+            transform: scale(1.05);
+        }
+        
+        .tf-btn.selected-true {
+            background: linear-gradient(135deg, #11998e, #38ef7d);
+            border-color: #38ef7d;
+            color: #000;
+        }
+        
+        .tf-btn.selected-false {
+            background: linear-gradient(135deg, #eb3349, #f45c43);
+            border-color: #f45c43;
+            color: #fff;
+        }
+        
+        .tf-btn .icon {
+            font-size: 1.3em;
+        }
+        
+        .mc-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .mc-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 18px;
+            border: 2px solid rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.05em;
+        }
+        
+        .mc-option:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.3);
+            transform: translateX(-5px);
+        }
+        
+        .mc-option.selected {
+            background: linear-gradient(135deg, rgba(0,212,255,0.2), rgba(123,44,191,0.2));
+            border-color: #00d4ff;
+        }
+        
+        .mc-option.correct {
+            background: linear-gradient(135deg, rgba(17,153,142,0.3), rgba(56,239,125,0.3));
+            border-color: #38ef7d;
+        }
+        
+        .mc-option.wrong {
+            background: linear-gradient(135deg, rgba(235,51,73,0.3), rgba(244,92,67,0.3));
+            border-color: #f45c43;
+        }
+        
+        .option-letter {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            color: #feca57;
+            flex-shrink: 0;
+        }
+        
+        .mc-option.selected .option-letter,
+        .mc-option.correct .option-letter {
+            background: #feca57;
+            color: #000;
+        }
+        
+        .submit-section {
+            text-align: center;
+            padding: 30px;
+            margin-top: 20px;
+        }
+        
+        .btn-submit {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff;
+            border: none;
+            padding: 18px 70px;
+            font-size: 1.3em;
+            font-weight: 800;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Cairo', sans-serif;
+            transition: all 0.3s ease;
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-submit:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 20px 45px rgba(102, 126, 234, 0.5);
+        }
+        
+        .results-screen {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .result-circle {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            margin: 0 auto 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: conic-gradient(from 0deg, #11998e var(--score-deg), rgba(255,255,255,0.1) var(--score-deg));
+            position: relative;
+        }
+        
+        .result-circle::before {
+            content: '';
+            position: absolute;
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background: #1a1a3e;
+        }
+        
+        .result-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .result-score {
+            font-size: 3em;
+            font-weight: 900;
+            color: #feca57;
+        }
+        
+        .result-total {
+            font-size: 1.2em;
+            color: #a0a0d0;
+        }
+        
+        .result-message {
+            font-size: 1.5em;
+            font-weight: 700;
+            margin: 20px 0;
+        }
+        
+        .result-excellent { color: #38ef7d; }
+        .result-good { color: #feca57; }
+        .result-pass { color: #ff9f43; }
+        .result-fail { color: #ff6b6b; }
+        
+        .results-stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+        
+        .stat-box {
+            background: rgba(255,255,255,0.08);
+            padding: 20px 30px;
+            border-radius: 15px;
+            min-width: 140px;
+        }
+        
+        .stat-box .number {
+            font-size: 2em;
+            font-weight: 800;
+        }
+        
+        .stat-box .label {
+            font-size: 0.9em;
+            color: #a0a0d0;
+        }
+        
+        .stat-correct .number { color: #38ef7d; }
+        .stat-wrong .number { color: #ff6b6b; }
+        .stat-empty .number { color: #a0a0d0; }
+        
+        .review-section {
+            margin-top: 40px;
+            text-align: right;
+        }
+        
+        .review-title {
+            font-size: 1.5em;
+            color: #feca57;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .review-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .review-card.correct-answer {
+            border-right: 4px solid #38ef7d;
+        }
+        
+        .review-card.wrong-answer {
+            border-right: 4px solid #ff6b6b;
+        }
+        
+        .review-card.empty-answer {
+            border-right: 4px solid #a0a0d0;
+        }
+        
+        .review-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .review-status {
+            padding: 3px 12px;
+            border-radius: 10px;
+            font-size: 0.8em;
+            font-weight: 700;
+        }
+        
+        .status-correct { background: #38ef7d; color: #000; }
+        .status-wrong { background: #ff6b6b; color: #fff; }
+        .status-empty { background: #a0a0d0; color: #000; }
+        
+        .review-q-text {
+            color: #e0e0ff;
+            margin-bottom: 10px;
+            font-size: 1.05em;
+        }
+        
+        .review-your-answer {
+            color: #ff6b6b;
+            margin-bottom: 5px;
+        }
+        
+        .review-correct-answer {
+            color: #38ef7d;
+            font-weight: 700;
+        }
+        
+        .review-explanation {
+            background: rgba(0,0,0,0.2);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 10px;
+            color: #c0c0e0;
+            line-height: 1.7;
+            border-right: 3px solid #00d4ff;
+        }
+        
+        .btn-restart {
+            background: linear-gradient(135deg, #11998e, #38ef7d);
+            color: #000;
+            border: none;
+            padding: 15px 50px;
+            font-size: 1.1em;
+            font-weight: 800;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Cairo', sans-serif;
+            margin-top: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-restart:hover {
+            transform: scale(1.05);
+        }
+        
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background: linear-gradient(135deg, #302b63, #24243e);
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 400px;
+            border: 2px solid #e94560;
+        }
+        
+        .modal-content h3 {
+            color: #ff6b6b;
+            margin-bottom: 15px;
+        }
+        
+        .modal-content p {
+            color: #c0c0e0;
+            margin-bottom: 20px;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+        
+        .btn-modal {
+            padding: 10px 25px;
+            border-radius: 10px;
+            border: none;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        
+        .btn-confirm {
+            background: #e94560;
+            color: #fff;
+        }
+        
+        .btn-cancel {
+            background: rgba(255,255,255,0.2);
+            color: #fff;
+        }
+        
+        @media (max-width: 768px) {
+            .exam-header h1 { font-size: 1.5em; }
+            .tf-options { flex-direction: column; align-items: center; }
+            .tf-btn { max-width: 100%; width: 100%; }
+            .timer-box { font-size: 1em; padding: 10px 20px; }
+            .question-text { font-size: 1em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+    
+    <div class="modal-overlay" id="modal">
+        <div class="modal-content">
+            <h3>⚠️ تنبيه!</h3>
+            <p id="modalText">هل أنت متأكد من تسليم الامتحان؟</p>
+            <div class="modal-buttons">
+                <button class="btn-modal btn-confirm" onclick="confirmSubmit()">نعم، سلّم</button>
+                <button class="btn-modal btn-cancel" onclick="closeModal()">إلغاء</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="start-screen" id="startScreen">
+            <div class="exam-header" style="margin-bottom:30px;">
+                <h1>🎓 امتحان تاريخ الرياضيات</h1>
+                <p class="subtitle">الفصل الرابع والخامس - نشأة الجبر والهندسة | علماء الإسكندرية</p>
+            </div>
+            
+            <h2>📋 معلومات الامتحان</h2>
+            <p>مدة الامتحان: <strong style="color:#feca57;">ساعتان (120 دقيقة)</strong></p>
+            <p>عدد الأسئلة: <strong style="color:#feca57;">60 سؤالاً</strong></p>
+            <p>نوع الأسئلة: <strong style="color:#feca57;">30 صح/خطأ + 30 اختياري</strong></p>
+            
+            <div class="rules-box">
+                <h3>📌 تعليمات هامة:</h3>
+                <ul>
+                    <li>اقرأ كل سؤال بعناية قبل الإجابة</li>
+                    <li>يمكنك تغيير إجابتك قبل التسليم</li>
+                    <li>عند التسليم ستظهر النتيجة مع الشرح التفصيلي</li>
+                    <li>الأسئلة تشمل: أسماء علماء، مسائل رياضية، تعريفات، تواريخ</li>
+                    <li>🦋 فراشة زرقاء قبل كل سؤال ترمز إلى السؤال النشط</li>
+                </ul>
+            </div>
+            
+            <button class="btn-start" onclick="startExam()">
+                🚀 ابدأ الامتحان
+            </button>
+        </div>
+        
+        <div class="exam-screen" id="examScreen">
+            <div class="exam-header" style="padding:20px;">
+                <h1 style="font-size:1.5em;">📝 الامتحان</h1>
+                <div class="timer-box">
+                    <span class="icon">⏱️</span>
+                    <span id="timer">02:00:00</span>
+                </div>
+                <div class="info-bar">
+                    <div class="info-item">صح/خطأ: <span id="tfCount">0/30</span></div>
+                    <div class="info-item">اختياري: <span id="mcCount">0/30</span></div>
+                    <div class="info-item">مجاب: <span id="answeredCount">0/60</span></div>
+                </div>
+            </div>
+            
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-text">
+                تم الإجابة على <span id="answeredNum">0</span> من <span>60</span> سؤال
+            </div>
+            
+            <div id="questionsContainer"></div>
+            
+            <div class="submit-section">
+                <button class="btn-submit" onclick="showSubmitModal()">
+                    ✉️ سلّم الامتحان
+                </button>
+            </div>
+        </div>
+        
+        <div class="results-screen" id="resultsScreen">
+            <div class="exam-header">
+                <h1>🎯 نتيجة الامتحان</h1>
+            </div>
+            
+            <div class="result-circle" id="resultCircle">
+                <div class="result-content">
+                    <div class="result-score" id="resultScore">0</div>
+                    <div class="result-total">/ 60</div>
+                </div>
+            </div>
+            
+            <div class="result-message" id="resultMessage"></div>
+            
+            <div class="results-stats">
+                <div class="stat-box stat-correct">
+                    <div class="number" id="correctNum">0</div>
+                    <div class="label">✅ صحيحة</div>
+                </div>
+                <div class="stat-box stat-wrong">
+                    <div class="number" id="wrongNum">0</div>
+                    <div class="label">❌ خاطئة</div>
+                </div>
+                <div class="stat-box stat-empty">
+                    <div class="number" id="emptyNum">0</div>
+                    <div class="label">⬜ فارغة</div>
+                </div>
+            </div>
+            
+            <div class="review-section" id="reviewSection">
+                <h2 class="review-title">📖 مراجعة الإجابات مع الشرح</h2>
+                <div id="reviewContainer"></div>
+            </div>
+            
+            <button class="btn-restart" onclick="restartExam()">
+                🔄 إعادة الامتحان
+            </button>
+        </div>
+    </div>
+"""
+
+with open('/mnt/agents/output/exam_part1.html', 'w', encoding='utf-8') as f:
+    f.write(part1)
+
+print("Part 1 written successfully")
+print(f"Length: {len(part1)} characters") 
+
+# Write the JavaScript part with questions data
+part2 = """
+    <script>
+        // Create particles
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 50; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 15 + 's';
+            particle.style.animationDuration = (10 + Math.random() * 10) + 's';
+            particlesContainer.appendChild(particle);
+        }
+        
+        // Exam Data - 60 Questions
+        const questions = [
+            // ===== TRUE/FALSE QUESTIONS (1-30) =====
+            {
+                id: 1,
+                type: 'tf',
+                question: 'علم الجبر تقدم كعلم مستقل قبل الحضارة الإسلامية.',
+                answer: false,
+                explanation: 'لم يتقدم علم الجبر كعلم مستقل قبل الحضارة الإسلامية، وذلك لأنه كان يحتاج إلى: لغة إصطلاحية رمزية بسيطة، واكتشاف الصفر، وتطور مفهوم العدد ليشمل الأعداد الطبيعية والصحيحة والنسبية وغير النسبية والحقيقية والتخيلية.'
+            },
+            {
+                id: 2,
+                type: 'tf',
+                question: 'الخوارزمي هو مؤسس علم الجبر كعلم مستقل.',
+                answer: true,
+                explanation: 'الخوارزمي (محمد بن موسى الخوارزمي) يُعتبر مؤسس علم الجبر كعلم مستقل، وأول من ألف في الجبر كتابه "الجبر والمقابلة".'
+            },
+            {
+                id: 3,
+                type: 'tf',
+                question: 'المصريون القدماء استخدموا "الكومة" للإشارة إلى العدد المجهول.',
+                answer: true,
+                explanation: 'كان المصريون القدماء يسمون العدد المجهول "كومة"، وهو ما يعادل الـ "س" في الجبر الحديث.'
+            },
+            {
+                id: 4,
+                type: 'tf',
+                question: 'البابليون وصلوا إلى مرحلة جبرية رمزية ناضجة.',
+                answer: false,
+                explanation: 'البابليون وصلوا إلى مرحلة جبرية ناضجة، لكن بالصورة الكلامية واللفظية وليس الرمزية. المرحلة الرمزية جاءت لاحقاً.'
+            },
+            {
+                id: 5,
+                type: 'tf',
+                question: 'الإغريق صاغوا الجبر بلغة الهندسة (جبر هندسي).',
+                answer: true,
+                explanation: 'الإغريق أخذوا الرياضيات اتجاهاً نظرياً وصاغوا الجبر بلغة الهندسة، حيث العدد المربع = مساحة، والجذر التربيعي = طول ضلع مربع.'
+            },
+            {
+                id: 6,
+                type: 'tf',
+                question: 'الكاشي هو أول من أدخل الصفر في الحساب.',
+                answer: false,
+                explanation: 'الخوارزمي هو أول من أدخل الصفر في الحساب، وليس الكاشي. الكاشي ابتكر الكسور العشرية.'
+            },
+            {
+                id: 7,
+                type: 'tf',
+                question: 'كلمة "Algorithm" في اللغات الأوروبية ترجع إلى اسم الخوارزمي.',
+                answer: true,
+                explanation: 'كلمة "Algorithm/Algorithme" ترجع إلى اسم الخوارزمي، كما أن "Algebra" ترجع إلى كلمة "الجبر" العربية التي وضعها الخوارزمي.'
+            },
+            {
+                id: 8,
+                type: 'tf',
+                question: 'عمر الخيام حل المعادلات التكعيبية هندسياً باستخدام قطوع المخروط.',
+                answer: true,
+                explanation: 'عمر الخيام من أوائل من حل المعادلات التكعيبية هندسياً باستخدام قطوع المخروط، وصنف المعادلات إلى 6 بسيطة و12 مركبة.'
+            },
+            {
+                id: 9,
+                type: 'tf',
+                question: 'نصير الدين الطوسي أسس الهندسة اللاإقليدية.',
+                answer: true,
+                explanation: 'نصير الدين الطوسي أسس الهندسة اللاإقليدية (الهندسة الاندلولية) التي تثبت على أسس منطقية تناقض هندسة إقليدس.'
+            },
+            {
+                id: 10,
+                type: 'tf',
+                question: 'إقليدس ولد في الإسكندرية وعاش طوال حياته في مصر.',
+                answer: false,
+                explanation: 'إقليدس ولد في اليونان (حوالي 330 ق.م) وانتقل إلى الإسكندرية في مصر حيث أنشأ مدرستها وكتب "العناصر".'
+            },
+            {
+                id: 11,
+                type: 'tf',
+                question: 'أرخميدس اكتشف قانون الطفو أثناء استحمامه.',
+                answer: true,
+                explanation: 'أرخميدس اكتشف قانون الطفو أثناء استحمامه، فخرج عارياً في الشوارع صارخاً "أوريكا!" (وجدتها!) مما أدى إلى قانون: الجسم المغمور يفقد من وزنه ما يعادل وزن السائل المزاح.'
+            },
+            {
+                id: 12,
+                type: 'tf',
+                question: 'إراتوستينس هو أول من حسب محيط الأرض بدقة عالية.',
+                answer: true,
+                explanation: 'إراتوستينس حسب محيط الأرض باستخدام زاوية الظل في الإسكندرية والشمس المتعامدة على أسوان، وتوصل إلى حوالي 40,000 كم.'
+            },
+            {
+                id: 13,
+                type: 'tf',
+                question: 'غربال إراتوستينس يستخدم لإيجاد الأعداد الأولية.',
+                answer: true,
+                explanation: 'غربال إراتوستينس هو طريقة فعالة لإيجاد الأعداد الأولية: اكتب الأعداد، احتفظ بالأول واشطب مضاعفاته، كرر للباقي.'
+            },
+            {
+                id: 14,
+                type: 'tf',
+                question: 'أبولونيوس هو من وضع المصطلحات الحالية للقطع المخروطية.',
+                answer: true,
+                explanation: 'أبولونيوس في كتابه "المقاطع المخروطية" وضع المصطلحات المستخدمة حتى الآن: القطع المكافئ، القطع الزائد، القطع الناقص.'
+            },
+            {
+                id: 15,
+                type: 'tf',
+                question: 'نيوتن اخترع التفاضل والتكامل بمفرده دون أي مساهمات أخرى.',
+                answer: false,
+                explanation: 'نيوتن وليبنيز اكتشفا التفاضل والتكامل بشكل مستقل، وحدث بينهما جدال علمي شهير حول الأولوية.'
+            },
+            {
+                id: 16,
+                type: 'tf',
+                question: 'ديكارت أسس الهندسة التحليلية بربط الجبر بالهندسة.',
+                answer: true,
+                explanation: 'رينيه ديكارت أسس الهندسة التحليلية باستخدام الإحداثيات لربط الجبر بالهندسة في كتابه "الهندسة" (1637).'
+            },
+            {
+                id: 17,
+                type: 'tf',
+                question: 'أينشتاين حصل على جائزة نوبل لنظريته النسبية.',
+                answer: false,
+                explanation: 'أينشتاين حصل على نوبل للفيزياء 1921 لاكتشافه التأثير الكهروضوئي (فوتونات الضوء)، وليس للنظرية النسبية.'
+            },
+            {
+                id: 18,
+                type: 'tf',
+                question: 'جاوس يُلقب بـ"أمير الرياضيين".',
+                answer: true,
+                explanation: 'كارل فريدريش جاوس (1777-1855) يُلقب بـ"أمير الرياضيين" (Prince of Mathematicians) لإسهاماته العظيمة.'
+            },
+            {
+                id: 19,
+                type: 'tf',
+                question: 'ثابت بن قرة هو أعظم هندسي عربي على الإطلاق.',
+                answer: true,
+                explanation: 'ثابت بن قرة (836-901م) يُعتبر أعظم هندسي عربي على الإطلاق، وأوجد التكامل والتفاضل بحساب حجم الجسم الدوار.'
+            },
+            {
+                id: 20,
+                type: 'tf',
+                question: 'ابن الهيثم قال أن الرؤية تتم بأشعة تنبعث من العين.',
+                answer: false,
+                explanation: 'ابن الهيثم نفى نظرية بطليموس القديمة وقال أن الرؤية تتم بأشعة من الجسم تدخل العين، وهو ما أثبته العلم الحديث.'
+            },
+            {
+                id: 21,
+                type: 'tf',
+                question: 'البتاني أدخل الجيب بدلاً من الوتر في حساب المثلثات.',
+                answer: true,
+                explanation: 'البتاني (ت 929م) أدخل الجيب (نصف الوتر) بدلاً من الوتر الكامل الذي كان يستخدمه بطليموس واليونان.'
+            },
+            {
+                id: 22,
+                type: 'tf',
+                question: 'أبو الوفاء البوزجاني هو أول من اكتشف معادلة سرعة القمر.',
+                answer: true,
+                explanation: 'أبو الوفاء البوزجاني (940-998م) اكتشف معادلة سرعة القمر (معادلة السرعة) قبل تيخو براهي بقرون، لكن الغرب نسبها لاحقاً لبراهي.'
+            },
+            {
+                id: 23,
+                type: 'tf',
+                question: 'القمصادي استخدم الرموز: جـ للجذر، ش للشيء، م للمال.',
+                answer: true,
+                explanation: 'القمصادي (أبو الحسن علي بن محمد، 890-1486م) أول من استخدم الرموز في الجبر: جـ (جذر)، ش (شيء/مجهول)، م (مال/س²)، ك (كعب/س³)، ل (يساوي).'
+            },
+            {
+                id: 24,
+                type: 'tf',
+                question: 'المصريون القدماء كانوا يعرفون نظرية فيثاغورس قبل فيثاغورس نفسه.',
+                answer: true,
+                explanation: 'المصريون استخدموا خيطاً بطول 3-4-5 لإنشاء الزاوية القائمة، وهو أساس نظرية فيثاغورس (3²+4²=5²)، لكنهم لم يصيغوها كنظرية عامة.'
+            },
+            {
+                id: 25,
+                type: 'tf',
+                question: 'الكاشي أعطى قيمة π بدقة 16 رقماً عشرياً.',
+                answer: true,
+                explanation: 'الكاشي في كتابه "رسالة المحيطية" أعطى قيمة π بدقة 16 رقماً عشرياً: π = 3.14159265358979325.'
+            },
+            {
+                id: 26,
+                type: 'tf',
+                question: 'السمولأل المغربي هو أول من استعمل الأسس السالبة.',
+                answer: true,
+                explanation: 'السمولأل المغربي هو أول من استعمل الأسس السالبة في العمليات الحسابية.'
+            },
+            {
+                id: 27,
+                type: 'tf',
+                question: 'بهاء الدين العاملي سبق نيوتن في طريقة إيجاد الجذور التقريبية.',
+                answer: true,
+                explanation: 'بهاء الدين العاملي (1547-1622م) وضع طريقة الكفتين (الميزان) لإيجاد الجذور التقريبية، وسبق نيوتن في ذلك.'
+            },
+            {
+                id: 28,
+                type: 'tf',
+                question: 'أويلر نشر أكثر من 400 ورقة بحثية وكتاب في الرياضيات.',
+                answer: true,
+                explanation: 'ليونارد أويلر (1707-1783) نشر أكثر من 400 ورقة بحثية وكتاب، ويُعتبر واحداً من أعظم الرياضيين في التاريخ.'
+            },
+            {
+                id: 29,
+                type: 'tf',
+                question: 'المسلمة الخامسة لإقليدس تتحدث عن المتوازيات.',
+                answer: true,
+                explanation: 'المسلمة الخامسة (مسلمة المتوازيات): إذا قطع مستقيم مستقيمين ومجموع زاويتين داخليتين < قائمتين → يلتقيان. حاول كثيرون إثباتها لكنها مسلمة.'
+            },
+            {
+                id: 30,
+                type: 'tf',
+                question: 'غاليليو هو مؤسس الميكانيكا الكمية.',
+                answer: false,
+                explanation: 'غاليليو هو مؤسس الميكانيكا الكلاسيكية وليس الكمية. الميكانيكا الكمية جاءت لاحقاً مع ماكس بلانك وآخرين في القرن العشرين.'
+            },
+            // ===== MULTIPLE CHOICE QUESTIONS (31-60) =====
+            {
+                id: 31,
+                type: 'mc',
+                question: 'ما هو تعريف "الجبر" عند الخوارزمي؟',
+                options: [
+                    'توحيد الحدود المتماثلة',
+                    'نقل الحدود المنفية إلى الجانب الآخر',
+                    'حل المعادلات التكعيبية',
+                    'إيجاد الجذور التربيعية'
+                ],
+                correct: 1,
+                explanation: 'عند الخوارزمي: الجبر = نقل الحدود المنفية (السالب) إلى الجانب الآخر من المعادلة لتصبح موجبة. المقابلة = توحيد الحدود المتماثلة.'
+            },
+            {
+                id: 32,
+                type: 'mc',
+                question: 'ما هي "المقابلة" عند الخوارزمي؟',
+                options: [
+                    'نقل الحدود المنفية',
+                    'توحيد الحدود المتماثلة',
+                    'ضرب طرفي المعادلة',
+                    'قسمة طرفي المعادلة'
+                ],
+                correct: 1,
+                explanation: 'المقابلة عند الخوارزمي = توحيد الحدود المتماثلة (جمع الحدود المتشابهة في طرف واحد).'
+            },
+            {
+                id: 33,
+                type: 'mc',
+                question: 'ما هو حل مسألة "كومة وسبعها يساوي تسعة عشر"؟',
+                options: [
+                    '14',
+                    '16.625',
+                    '19',
+                    '21'
+                ],
+                correct: 1,
+                explanation: 'س + س/7 = 19 → 8س/7 = 19 → 8س = 133 → س = 133/8 = 16.625'
+            },
+            {
+                id: 34,
+                type: 'mc',
+                question: 'ما هو حجم الهرم الناقص ذي القاعدتين المربعتين: ارتفاع 6، القاعدة السفلى 4، العليا 2؟',
+                options: [
+                    '28',
+                    '48',
+                    '56',
+                    '72'
+                ],
+                correct: 2,
+                explanation: 'الحجم = (6/3) × (4² + 4×2 + 2²) = 2 × (16 + 8 + 4) = 2 × 28 = 56'
+            },
+            {
+                id: 35,
+                type: 'mc',
+                question: 'من أول من حسب محيط الأرض بدقة عالية؟',
+                options: [
+                    'إقليدس',
+                    'أرخميدس',
+                    'إراتوستينس',
+                    'أبولونيوس'
+                ],
+                correct: 2,
+                explanation: 'إراتوستينس (276-194 ق.م) أول من حسب محيط الأرض بدقة، وتوصل إلى حوالي 40,000 كم.'
+            },
+            {
+                id: 36,
+                type: 'mc',
+                question: 'ما هي قيمة النسبة الذهبية (φ)؟',
+                options: [
+                    '1.414',
+                    '1.618',
+                    '2.718',
+                    '3.141'
+                ],
+                correct: 1,
+                explanation: 'φ = (1+√5)/2 ≈ 1.618033988... وهي نسبة تقترب إليها خارج قسمة أي عدد فيبوناتشي على السابق.'
+            },
+            {
+                id: 37,
+                type: 'mc',
+                question: 'في أي سنة نشر نيوتن كتابه "المبادئ الرياضية للفلسفة الطبيعية"؟',
+                options: [
+                    '1666',
+                    '1684',
+                    '1687',
+                    '1704'
+                ],
+                correct: 2,
+                explanation: 'نيوتن نشر "المبادئ الرياضية للفلسفة الطبيعية" (Principia Mathematica) عام 1687، ويُعتبر أعظم كتاب علمي في التاريخ.'
+            },
+            {
+                id: 38,
+                type: 'mc',
+                question: 'ما هي معادلة أينشتاين الشهيرة E = mc²؟',
+                options: [
+                    'الطاقة = الكتلة × السرعة',
+                    'الطاقة = الكتلة × مربع سرعة الضوء',
+                    'الطاقة = الكتلة ÷ مربع سرعة الضوء',
+                    'الطاقة = الكتلة + مربع سرعة الضوء'
+                ],
+                correct: 1,
+                explanation: 'E = mc² تعني: الطاقة = الكتلة × مربع سرعة الضوء (c ≈ 3×10⁸ م/ث). هذا يعني أن الكتلة يمكن تحويلها إلى طاقة هائلة.'
+            },
+            {
+                id: 39,
+                type: 'mc',
+                question: 'من هو "أمير الرياضيين"؟',
+                options: [
+                    'نيوتن',
+                    'أويلر',
+                    'جاوس',
+                    'أينشتاين'
+                ],
+                correct: 2,
+                explanation: 'كارل فريدريش جاوس (1777-1855) يُلقب بـ"أمير الرياضيين" (Prince of Mathematicians) لإسهاماته العظيمة في نظرية الأعداد والإحصاء والفلك.'
+            },
+            {
+                id: 40,
+                type: 'mc',
+                question: 'في أي عام حصل أينشتاين على جائزة نوبل للفيزياء؟',
+                options: [
+                    '1905',
+                    '1917',
+                    '1921',
+                    '1933'
+                ],
+                correct: 2,
+                explanation: 'أينشتاين حصل على نوبل للفيزياء عام 1921 لاكتشافه التأثير الكهروضوئي (أن الضوء يتكون من فوتونات)، وليس للنظرية النسبية.'
+            },
+            {
+                id: 41,
+                type: 'mc',
+                question: 'ما هو كتاب إقليدس الأشهر؟',
+                options: [
+                    'المقاطع المخروطية',
+                    'العناصر (Elements)',
+                    'المناظر',
+                    'المبادئ الرياضية'
+                ],
+                correct: 1,
+                explanation: 'كتاب "العناصر" (Elements) هو أشهر كتاب رياضيات في التاريخ، يتكون من 13 كتاباً ويغطي الهندسة ونظرية الأعداد.'
+            },
+            {
+                id: 42,
+                type: 'mc',
+                question: 'من أول من أثبت نظرية المتوازيات بـ 8 نظريات تمهيدية؟',
+                options: [
+                    'إقليدس',
+                    'عمر الخيام',
+                    'نصير الدين الطوسي',
+                    'ثابت بن قرة'
+                ],
+                correct: 1,
+                explanation: 'عمر الخيام (1048-1131م) برهن 8 نظريات استعداداً لإثبات المسلمة الخامسة (المتوازيات)، لكنه لم يتمكن من إثباتها كمبرهنة.'
+            },
+            {
+                id: 43,
+                type: 'mc',
+                question: 'ما هي "الأعداد الصماء" عند الخوارزمي؟',
+                options: [
+                    'الأعداد الزوجية',
+                    'الأعداد التي لا ينجز إلا بكسر (الأعداد اللاعقلية)',
+                    'الأعداد الأولية',
+                    'الأعداد الفردية'
+                ],
+                correct: 1,
+                explanation: 'الخوارزمي أطلق "الأعداد الصماء" على الأعداد التي لا ينجز إلا بكسر (الأعداد غير النسبية/اللاعقلية مثل √2)، وترجم هذا المصطلح حرفياً للغات العالمية.'
+            },
+            {
+                id: 44,
+                type: 'mc',
+                question: 'من أول من وضع قاعدة الأشكال المكتملة (قانون الجيوب)؟',
+                options: [
+                    'البتاني',
+                    'أبو الوفاء',
+                    'نصير الدين الطوسي',
+                    'الخوارزمي'
+                ],
+                correct: 2,
+                explanation: 'نصير الدين الطوسي وضع "قاعدة الأشكال المكتملة" وهي صورة مبسطة لقانون الجيوب: "جيوب الزوايا تناسب مع الأضلاع المقابلة لها".'
+            },
+            {
+                id: 45,
+                type: 'mc',
+                question: 'من هو مؤلف كتاب "المناظر" الذي أسس علم البصريات الحديث؟',
+                options: [
+                    'الخوارزمي',
+                    'ابن الهيثم',
+                    'البتاني',
+                    'ثابت بن قرة'
+                ],
+                correct: 1,
+                explanation: 'ابن الهيثم (965-1040م) كتب "المناظر" (Kitab al-Manazir) الذي أسس علم البصريات الحديث، ونفى أن الرؤية تتم بأشعة من العين.'
+            },
+            {
+                id: 46,
+                type: 'mc',
+                question: 'ما هي النظرية النسبية الخاصة لأينشتاين (1905)؟',
+                options: [
+                    'الجاذبية = انحناء الزمكان',
+                    'E = mc² والتحويلات بين الإطارات المرجعية',
+                    'الضوء يتكون من فوتونات',
+                    'الكون يتمدد باستمرار'
+                ],
+                correct: 1,
+                explanation: 'النظرية النسبية الخاصة (1905): E=mc² والتحويلات بين الإطارات المرجعية المتحركة. النظرية العامة (1917): الجاذبية = انحناء الزمكان.'
+            },
+            {
+                id: 47,
+                type: 'mc',
+                question: 'من أول من بحث في المربعات السحرية بعد الصينيين؟',
+                options: [
+                    'الخوارزمي',
+                    'ثابت بن قرة',
+                    'عمر الخيام',
+                    'الكاشي'
+                ],
+                correct: 1,
+                explanation: 'ثابت بن قرة (836-901م) هو أول من بحث في المربعات السحرية بعد الصينيين القدماء.'
+            },
+            {
+                id: 48,
+                type: 'mc',
+                question: 'ما هو كتاب جاوس الذي أسس نظرية الأعداد كفرع مستقل؟',
+                options: [
+                    'المبادئ الرياضية',
+                    'التحقيقات الحسابية',
+                    'العناصر',
+                    'المناظر'
+                ],
+                correct: 1,
+                explanation: 'جاوس نشر "التحقيقات الحسابية" (Disquisitiones Arithmeticae) عام 1801، وهو الكتاب الذي أسس نظرية الأعداد كفرع مستقل في الرياضيات.'
+            },
+            {
+                id: 49,
+                type: 'mc',
+                question: 'من أول من وضع النسبة المثلثية (الظل/tan)؟',
+                options: [
+                    'البتاني',
+                    'أبو الوفاء البوزجاني',
+                    'نصير الدين الطوسي',
+                    'الخوارزمي'
+                ],
+                correct: 1,
+                explanation: 'أبو الوفاء البوزجاني (940-998م) هو أول من وضع النسبة المثلثية "الظل" (tan) وأول من استعملها في حلول المسائل الرياضية.'
+            },
+            {
+                id: 50,
+                type: 'mc',
+                question: 'ما هي متتالية فيبوناتشي؟',
+                options: [
+                    'كل عدد = مجموع العددين السابقين',
+                    'كل عدد = ضرب العددين السابقين',
+                    'كل عدد = طرح العددين السابقين',
+                    'أعداد متتالية بفارق ثابت'
+                ],
+                correct: 0,
+                explanation: 'متتالية فيبوناتشي: كل عدد = مجموع العددين السابقين (0, 1, 1, 2, 3, 5, 8, 13, 21...). اكتشفها إراتوستينس/فيثاغورسيون.'
+            },
+            {
+                id: 51,
+                type: 'mc',
+                question: 'من أول من أدخل الجيب (نصف الوتر) بدلاً من الوتر الكامل؟',
+                options: [
+                    'بطليموس',
+                    'الخوارزمي',
+                    'البتاني',
+                    'أبو الوفاء'
+                ],
+                correct: 2,
+                explanation: 'البتاني (ت 929م) أدخل الجيب (نصف الوتر) بدلاً من الوتر الكامل الذي كان يستخدمه بطليموس واليونانيون.'
+            },
+            {
+                id: 52,
+                type: 'mc',
+                question: 'ما هو قانون الطفو الذي اكتشفه أرخميدس؟',
+                options: [
+                    'الجسم يغطس إذا كان وزنه أكبر من السائل',
+                    'الجسم المغمور يفقد من وزنه ما يعادل وزن السائل المزاح',
+                    'السائل يدفع الجسم للأعلى دائماً',
+                    'الجسم يطفو إذا كان كثافته أقل من الماء'
+                ],
+                correct: 1,
+                explanation: 'قانون أرخميدس: الجسم المغمور يفقد من وزنه ما يعادل وزن السائل المزاح. هذا مبدأ الطفو الأساسي.'
+            },
+            {
+                id: 53,
+                type: 'mc',
+                question: 'من هو مؤلف كتاب "خالصة الحساب" المكون من 10 أبواب؟',
+                options: [
+                    'الخوارزمي',
+                    'الكاشي',
+                    'بهاء الدين العاملي',
+                    'عمر الخيام'
+                ],
+                correct: 2,
+                explanation: 'بهاء الدين العاملي (1547-1622م) ألف "خالصة الحساب" في 10 أبواب تغطي الحساب والجبر والهندسة والمثلثات.'
+            },
+            {
+                id: 54,
+                type: 'mc',
+                question: 'ما هي "طريقة الكفتين" التي وضعها بهاء الدين العاملي؟',
+                options: [
+                    'طريقة لحساب المساحات',
+                    'طريقة لإيجاد الجذور التقريبية',
+                    'طريقة لحل المعادلات التكعيبية',
+                    'طريقة لحساب حجم الكرة'
+                ],
+                correct: 1,
+                explanation: 'طريقة الكفتين (الميزان) هي طريقة بهاء الدين العاملي لإيجاد الجذور الحقيقية والتقريبية للمعادلات الجبرية، وسبقت نيوتن.'
+            },
+            {
+                id: 55,
+                type: 'mc',
+                question: 'من أول من اكتشف أن الضوء يتكون من فوتونات (حزم طاقة)؟',
+                options: [
+                    'نيوتن',
+                    'ماكس بلانك',
+                    'أينشتاين',
+                    'بور'
+                ],
+                correct: 2,
+                explanation: 'أينشتاين في 1905 اكتشف أن الضوء يتكون من فوتونات (حزم طاقة كمومية)، مما فسر التأثير الكهروضوئي وحصل على نوبل لذلك.'
+            },
+            {
+                id: 56,
+                type: 'mc',
+                question: 'ما هي النظرية النسبية العامة لأينشتاين (1917)؟',
+                options: [
+                    'E = mc²',
+                    'الجاذبية = انحناء الزمكان',
+                    'الضوء يتكون من فوتونات',
+                    'الكون ثابت الحجم'
+                ],
+                correct: 1,
+                explanation: 'النظرية النسبية العامة (1917): الجاذبية ليست قوة تقليدية بل هي انحناء في نسيج الزمكان-الزمان نتيجة للكتلة والطاقة.'
+            },
+            {
+                id: 57,
+                type: 'mc',
+                question: 'من أسس الهندسة التحليلية بربط الجبر بالهندسة بالإحداثيات؟',
+                options: [
+                    'نيوتن',
+                    'أويلر',
+                    'ديكارت',
+                    'جاوس'
+                ],
+                correct: 2,
+                explanation: 'رينيه ديكارت (1596-1650) أسس الهندسة التحليلية في كتابه "الهندسة" (1637) باستخدام الإحداثيات لربط المعادلات الجبرية بالأشكال الهندسية.'
+            },
+            {
+                id: 58,
+                type: 'mc',
+                question: 'ما هو كتاب أرخميدس الذي أسس الميكانيكا وعلم السكونيات؟',
+                options: [
+                    'العناصر',
+                    'المقاطع المخروطية',
+                    'السكونيات (On the Equilibrium of Planes)',
+                    'المناظر'
+                ],
+                correct: 2,
+                explanation: 'أرخميدس كتب "السكونيات" (On the Equilibrium of Planes) الذي أسس فيه علم السكونيات (Statics) والميكانيكا.'
+            },
+            {
+                id: 59,
+                type: 'mc',
+                question: 'من أول من وضع قانوناً لمجموع الأعداد الطبيعية المرفوعة للقوة الرابعة؟',
+                options: [
+                    'الخوارزمي',
+                    'عمر الخيام',
+                    'الكاشي',
+                    'نصير الدين الطوسي'
+                ],
+                correct: 2,
+                explanation: 'الكاشي وضع قانوناً خاصاً لمجموع الأعداد الطبيعية المرفوعة للقوة الرابعة (1⁴+2⁴+3⁴+...+n⁴) في كتاباته.'
+            },
+            {
+                id: 60,
+                type: 'mc',
+                question: 'ما هي النسبة بين محيط الدائرة وقطرها (π) التي أعطاها الكاشي؟',
+                options: [
+                    '3.14',
+                    '3.1416',
+                    '3.14159265358979325',
+                    '22/7'
+                ],
+                correct: 2,
+                explanation: 'الكاشي أعطى π بدقة 16 رقماً عشرياً: 3.14159265358979325، وهذا كان إنجازاً فريداً في عصره.'
+            }
+        ];
+        
+        // State
+        let currentAnswers = {};
+        let timeRemaining = 7200; // 2 hours in seconds
+        let timerInterval;
+        let examStarted = false;
+        
+        // Start Exam
+        function startExam() {
+            document.getElementById('startScreen').style.display = 'none';
+            document.getElementById('examScreen').style.display = 'block';
+            examStarted = true;
+            renderQuestions();
+            startTimer();
+        }
+        
+        // Render Questions
+        function renderQuestions() {
+            const container = document.getElementById('questionsContainer');
+            container.innerHTML = '';
+            
+            questions.forEach((q, index) => {
+                const card = document.createElement('div');
+                card.className = 'question-card';
+                card.id = 'q-' + q.id;
+                
+                let optionsHTML = '';
+                
+                if (q.type === 'tf') {
+                    const trueSelected = currentAnswers[q.id] === true ? 'selected-true' : '';
+                    const falseSelected = currentAnswers[q.id] === false ? 'selected-false' : '';
+                    
+                    optionsHTML = '<div class="tf-options">' +
+                        '<button class="tf-btn ' + trueSelected + '" onclick="selectTF(' + q.id + ', true)">' +
+                        '<span class="icon">✅</span> صح' +
+                        '</button>' +
+                        '<button class="tf-btn ' + falseSelected + '" onclick="selectTF(' + q.id + ', false)">' +
+                        '<span class="icon">❌</span> خطأ' +
+                        '</button>' +
+                        '</div>';
+                } else {
+                    optionsHTML = '<div class="mc-options">';
+                    q.options.forEach((opt, idx) => {
+                        const selected = currentAnswers[q.id] === idx ? 'selected' : '';
+                        optionsHTML += '<div class="mc-option ' + selected + '" onclick="selectMC(' + q.id + ', ' + idx + ')">' +
+                            '<div class="option-letter">' + String.fromCharCode(65 + idx) + '</div>' +
+                            '<div>' + opt + '</div>' +
+                            '</div>';
+                    });
+                    optionsHTML += '</div>';
+                }
+                
+                const typeLabel = q.type === 'tf' ? 'صح / خطأ' : 'اختياري';
+                
+                card.innerHTML = 
+                    '<div class="question-header">' +
+                    '<span class="butterfly">🦋</span>' +
+                    '<span class="q-number">س ' + q.id + '</span>' +
+                    '<span class="q-type">' + typeLabel + '</span>' +
+                    '</div>' +
+                    '<div class="question-text">' + q.question + '</div>' +
+                    optionsHTML;
+                
+                container.appendChild(card);
+            });
+        }
+        
+        // Select True/False
+        function selectTF(qid, value) {
+            currentAnswers[qid] = value;
+            updateUI();
+            renderQuestions();
+        }
+        
+        // Select Multiple Choice
+        function selectMC(qid, idx) {
+            currentAnswers[qid] = idx;
+            updateUI();
+            renderQuestions();
+        }
+        
+        // Update UI
+        function updateUI() {
+            const answered = Object.keys(currentAnswers).length;
+            const total = questions.length;
+            const tfAnswered = questions.filter(q => q.type === 'tf' && currentAnswers[q.id] !== undefined).length;
+            const mcAnswered = questions.filter(q => q.type === 'mc' && currentAnswers[q.id] !== undefined).length;
+            
+            document.getElementById('answeredNum').textContent = answered;
+            document.getElementById('tfCount').textContent = tfAnswered + '/30';
+            document.getElementById('mcCount').textContent = mcAnswered + '/30';
+            document.getElementById('answeredCount').textContent = answered + '/60';
+            document.getElementById('progressFill').style.width = (answered / total * 100) + '%';
+        }
+        
+        // Timer
+        function startTimer() {
+            timerInterval = setInterval(function() {
+                timeRemaining--;
+                if (timeRemaining <= 0) {
+                    clearInterval(timerInterval);
+                    submitExam();
+                    return;
+                }
+                
+                const hours = Math.floor(timeRemaining / 3600);
+                const minutes = Math.floor((timeRemaining % 3600) / 60);
+                const seconds = timeRemaining % 60;
+                
+                document.getElementById('timer').textContent = 
+                    String(hours).padStart(2, '0') + ':' +
+                    String(minutes).padStart(2, '0') + ':' +
+                    String(seconds).padStart(2, '0');
+            }, 1000);
+        }
+        
+        // Modal
+        function showSubmitModal() {
+            document.getElementById('modal').style.display = 'flex';
+            const answered = Object.keys(currentAnswers).length;
+            const unanswered = 60 - answered;
+            
+            let text = 'هل أنت متأكد من تسليم الامتحان؟';
+            if (unanswered > 0) {
+                text += '<br><br>⚠️ لم تجب على ' + unanswered + ' سؤال!';
+            }
+            document.getElementById('modalText').innerHTML = text;
+        }
+        
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+        
+        function confirmSubmit() {
+            closeModal();
+            submitExam();
+        }
+        
+        // Submit Exam
+        function submitExam() {
+            clearInterval(timerInterval);
+            examStarted = false;
+            
+            let correct = 0;
+            let wrong = 0;
+            let empty = 0;
+            
+            questions.forEach(q => {
+                if (currentAnswers[q.id] === undefined) {
+                    empty++;
+                } else if (q.type === 'tf') {
+                    if (currentAnswers[q.id] === q.answer) correct++;
+                    else wrong++;
+                } else {
+                    if (currentAnswers[q.id] === q.correct) correct++;
+                    else wrong++;
+                }
+            });
+            
+            const score = correct;
+            const percentage = (score / 60 * 100);
+            
+            // Show results
+            document.getElementById('examScreen').style.display = 'none';
+            document.getElementById('resultsScreen').style.display = 'block';
+            
+            document.getElementById('resultScore').textContent = score;
+            document.getElementById('resultCircle').style.setProperty('--score-deg', percentage * 3.6 + 'deg');
+            
+            document.getElementById('correctNum').textContent = correct;
+            document.getElementById('wrongNum').textContent = wrong;
+            document.getElementById('emptyNum').textContent = empty;
+            
+            let message = '';
+            let msgClass = '';
+            if (percentage >= 90) {
+                message = '🌟 ممتاز! أداء استثنائي!';
+                msgClass = 'result-excellent';
+            } else if (percentage >= 75) {
+                message = '👏 جيد جداً! أداء متميز!';
+                msgClass = 'result-good';
+            } else if (percentage >= 50) {
+                message = '✓ ناجح! يمكنك التحسن أكثر!';
+                msgClass = 'result-pass';
+            } else {
+                message = '💪 استمر في المراجعة! أنت تستطيع!';
+                msgClass = 'result-fail';
+            }
+            
+            const msgEl = document.getElementById('resultMessage');
+            msgEl.textContent = message;
+            msgEl.className = 'result-message ' + msgClass;
+            
+            // Review
+            const reviewContainer = document.getElementById('reviewContainer');
+            reviewContainer.innerHTML = '';
+            
+            questions.forEach(q => {
+                const userAns = currentAnswers[q.id];
+                let status = '';
+                let statusClass = '';
+                let statusText = '';
+                
+                if (userAns === undefined) {
+                    status = 'empty';
+                    statusClass = 'status-empty';
+                    statusText = '⬜ لم تجب';
+                } else if (q.type === 'tf') {
+                    if (userAns === q.answer) {
+                        status = 'correct';
+                        statusClass = 'status-correct';
+                        statusText = '✅ صحيحة';
+                    } else {
+                        status = 'wrong';
+                        statusClass = 'status-wrong';
+                        statusText = '❌ خاطئة';
+                    }
+                } else {
+                    if (userAns === q.correct) {
+                        status = 'correct';
+                        statusClass = 'status-correct';
+                        statusText = '✅ صحيحة';
+                    } else {
+                        status = 'wrong';
+                        statusClass = 'status-wrong';
+                        statusText = '❌ خاطئة';
+                    }
+                }
+                
+                let correctAnswerText = '';
+                if (q.type === 'tf') {
+                    correctAnswerText = q.answer ? 'الإجابة الصحيحة: ✅ صح' : 'الإجابة الصحيحة: ❌ خطأ';
+                } else {
+                    correctAnswerText = 'الإجابة الصحيحة: ' + String.fromCharCode(65 + q.correct) + ') ' + q.options[q.correct];
+                }
+                
+                let userAnswerText = '';
+                if (userAns === undefined) {
+                    userAnswerText = 'لم تجب على هذا السؤال';
+                } else if (q.type === 'tf') {
+                    userAnswerText = 'إجابتك: ' + (userAns ? '✅ صح' : '❌ خطأ');
+                } else {
+                    userAnswerText = 'إجابتك: ' + String.fromCharCode(65 + userAns) + ') ' + q.options[userAns];
+                }
+                
+                const reviewCard = document.createElement('div');
+                reviewCard.className = 'review-card ' + status + '-answer';
+                reviewCard.innerHTML = 
+                    '<div class="review-header">' +
+                    '<span class="review-status ' + statusClass + '">' + statusText + '</span>' +
+                    '<span style="color:#a0a0d0;">س ' + q.id + '</span>' +
+                    '</div>' +
+                    '<div class="review-q-text">' + q.question + '</div>' +
+                    '<div class="review-your-answer">' + userAnswerText + '</div>' +
+                    '<div class="review-correct-answer">' + correctAnswerText + '</div>' +
+                    '<div class="review-explanation">💡 ' + q.explanation + '</div>';
+                
+                reviewContainer.appendChild(reviewCard);
+            });
+        }
+        
+        // Restart
+        function restartExam() {
+            currentAnswers = {};
+            timeRemaining = 7200;
+            examStarted = false;
+            
+            document.getElementById('resultsScreen').style.display = 'none';
+            document.getElementById('startScreen').style.display = 'block';
+            document.getElementById('timer').textContent = '02:00:00';
+        }
+        
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
+"""
+
+with open('/mnt/agents/output/exam_part2.html', 'w', encoding='utf-8') as f:
+    f.write(part2)
+
+print("Part 2 written successfully")
+print(f"Length: {len(part2)} characters")
+# Now combine both parts into the final file
+with open('/mnt/agents/output/exam_part1.html', 'r', encoding='utf-8') as f:
+    part1 = f.read()
+
+with open('/mnt/agents/output/exam_part2.html', 'r', encoding='utf-8') as f:
+    part2 = f.read()
+
+# Combine and save as final file
+final_content = part1 + '\n' + part2
+
+with open('/mnt/agents/output/exam_history_math.html', 'w', encoding='utf-8') as f:
+    f.write(final_content)
+
+# Clean up temp files
+import os
+os.remove('/mnt/agents/output/exam_part1.html')
+os.remove('/mnt/agents/output/exam_part2.html')
+
+print("✅ Final exam file created successfully!")
+print(f"📁 File: /mnt/agents/output/exam_history_math.html")
+print(f"📊 Total size: {len(final_content):,} characters")
+print(f"📝 Questions: 60 (30 TF + 30 MC)")
+print(f"⏱️ Duration: 2 hours") 
+# Let me verify the file is valid HTML by checking key parts
+with open('/mnt/agents/output/exam_history_math.html', 'r', encoding='utf-8') as f:
+    content = f.read()
+
+# Check for key elements
+checks = {
+    'Has DOCTYPE': '<!DOCTYPE html>' in content,
+    'Has closing html': '</html>' in content,
+    'Has closing body': '</body>' in content,
+    'Has closing head': '</head>' in content,
+    'Has script tag': '<script>' in content,
+    'Has 60 questions': content.count('id:') >= 60 or content.count('"id":') >= 60,
+    'Has butterfly emoji': '🦋' in content,
+    'Has startExam function': 'function startExam()' in content,
+    'Has submitExam function': 'function submitExam()' in content,
+    'File size > 50KB': len(content) > 50000,
+}
+
+print("🔍 HTML Validation Checks:")
+print("=" * 40)
+for check, result in checks.items():
+    status = "✅" if result else "❌"
+    print(f"{status} {check}")
+
+print(f"\n📊 File size: {len(content):,} bytes")
+print(f"📄 Lines: {content.count(chr(10)):,}")
